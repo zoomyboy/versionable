@@ -17,6 +17,10 @@ class Version extends Eloquent
      */
     public $table = "versions";
 
+    public $hidden = ['model_data'];
+
+    public $appends = ['nice_model_data'];
+
     /**
      * @var string
      */
@@ -29,6 +33,10 @@ class Version extends Eloquent
     public function versionable()
     {
         return $this->morphTo();
+    }
+
+    public function getNiceModelDataAttribute() {
+        return unserialize($this->model_data);
     }
 
     /**
@@ -59,6 +67,9 @@ class Version extends Eloquent
         return $model;
     }
 
+    public function user() {
+        return $this->belongsTo(\App\User::class);
+    }
 
     /**
      * Revert to the stored model version make it the current version
